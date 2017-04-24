@@ -1,5 +1,5 @@
 {
-  "name": "@nio/topic-graph",
+  "name": "@nio/topic-grapher",
   "version": "1.0.2",
   "description": "nio communications topic grapher",
   "main": "lib/index.js",
