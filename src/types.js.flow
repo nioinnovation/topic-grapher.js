@@ -1,0 +1,58 @@
+// @flow
+export type BlockName = string;
+export type BlockAlias = string;
+export type BlockTerminal = string;
+
+export type Topic = string;
+export type TopicList = Array<BlockName>;
+export type TopicMap = {[BlockName]: Topic};
+
+export type PartitionResult = [
+  TopicMap,
+  TopicMap,
+  TopicList,
+  TopicList,
+];
+
+export type BlockShape = {
+  type: string,
+  topic: string,
+};
+
+export type ServiceName = string;
+export type ServiceShape = {
+  name: ServiceName,
+  execution: Execution;
+  mapping: Array<ServiceMapping>;
+};
+
+export type ServiceMapping = {
+  name: BlockAlias,
+  mapping: BlockName,
+};
+
+export type Execution = Array<ExecutionStep>;
+
+export type ExecutionStep = {
+  name: BlockName;
+  receivers: { [BlockTerminal]: Receiver }
+};
+
+export type Receiver = {
+  name: BlockName;
+  input: BlockTerminal;
+};
+
+
+export type Blocks = { [BlockName]: BlockShape };
+export type Services = { [ServiceName]: ServiceShape };
+export type Mapping = { [BlockAlias]: BlockName };
+
+export type GraphResult = {
+  nodes: Array<ServiceName>;
+  edges: Array<[ServiceName, ServiceName, Topic]>;
+  publishersOf: (Topic) => Array<[ServiceName, Topic]>;
+  subscribersOf: (Topic) => Array<[ServiceName, Topic]>
+};
+
+export type TopicServiceList = { [Topic]: Array<ServiceName> };
