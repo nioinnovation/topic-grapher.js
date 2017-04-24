@@ -18,4 +18,4 @@ const blocks = await fetch(blocksUrl).then(r => r.json());
 const result = graph(services, blocks)
 result.nodes // => Array<ServiceName>
 result.edges // => Array<[ServiceName, ServiceName, Topic]>
-````
+```
