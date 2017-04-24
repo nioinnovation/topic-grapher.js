@@ -1,13 +1,13 @@
 # Installation
 
 ```bash
-$ npm install @nio/topic-graph
+$ npm install @nio/topic-grapher
 ```
 
 # Usage
 
 ```js
-import graph from '@nio/topic-graph';
+import graph from '@nio/topic-grapher';
 
 type ServiceName = string;
 type Topic = string;
