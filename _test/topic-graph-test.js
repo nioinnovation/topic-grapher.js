@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
 import graph from '../src';
-import { simple, circular } from './fixtures.json'
+import { simple, circular, env } from './fixtures.json'
 
 describe('topic graph', () => {
   describe('with a simple pub/sub', () => {
@@ -62,6 +62,37 @@ describe('topic graph', () => {
       expect(pubs).to.have.length(1);
       expect(pubs).to.deep.equal([
         ['CircularService', 'nio.data']
+      ]);
+    });
+  });
+
+  describe('with a environmental variables pub/sub', () => {
+    const result = graph(env.services, env.blocks);
+
+    it('should have two nodes', () => {
+      expect(result.nodes).to.have.length(2);
+      expect(result.nodes).to.have.members(['PubService', 'SubService']);
+    });
+
+    it('should have one edge', () => {
+      expect(result.edges).to.deep.equal([
+        ['PubService', 'SubService', 'nio.[[FOO]]']
+      ]);
+    });
+
+    it('should find publishers through `nio.[[FOO]]`', () => {
+      const pubs = result.publishersOf('nio.[[FOO]]');
+      expect(pubs).to.have.length(1);
+      expect(pubs).to.deep.equal([
+        ['PubService', 'nio.[[FOO]]']
+      ]);
+    });
+
+    it('should find subscribers through `nio.[[FOO]]`', () => {
+      const pubs = result.subscribersOf('nio.[[FOO]]');
+      expect(pubs).to.have.length(1);
+      expect(pubs).to.deep.equal([
+        ['SubService', 'nio.[[FOO]]']
       ]);
     });
   });

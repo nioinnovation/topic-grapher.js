@@ -32,6 +32,6 @@
     "rimraf": "^2.6.1"
   },
   "dependencies": {
-    "@nio/topic-matcher": "^1.1.0"
+    "@nio/topic-matcher": "^1.2.0"
   }
 }

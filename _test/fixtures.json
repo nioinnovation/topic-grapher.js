@@ -29,6 +29,36 @@
       }
     }
   },
+  "env": {
+    "services": {
+      "PubService": {
+        "name": "PubService",
+        "mapping": [],
+        "execution": [
+          { "name": "PubData" }
+        ]
+      },
+      "SubService": {
+        "name": "SubService",
+        "mapping": [],
+        "execution": [
+          { "name": "SubData" }
+        ]
+      }
+    },
+    "blocks": {
+      "PubData": {
+        "name": "PubData",
+        "type": "Publisher",
+        "topic": "nio.[[FOO]]"
+      },
+      "SubData": {
+        "name": "SubData",
+        "type": "Subscriber",
+        "topic": "nio.[[FOO]]"
+      }
+    }
+  },
   "circular": {
     "services": {
       "CircularService": {

@@ -29,6 +29,10 @@ const createAdder = (list: TopicServiceList) =>
     (list[topic] || (list[topic] = [])).push(service)
   );
 
+const matcherOptions = {
+  resolver: t => t.replace(/\[\[([^\]]+)\]\]/g, '__$1__'),
+};
+
 export default function compile(services: Services, blocks: Blocks): GraphResult {
   const nodes = new Set();
 
@@ -82,7 +86,7 @@ export default function compile(services: Services, blocks: Blocks): GraphResult
 
   const edges = subTopics.reduce((l0, subTopic) => (
     pubTopics.reduce((l1, pubTopic) => (
-      matcher(subTopic, pubTopic) ? [
+      matcher(subTopic, pubTopic, matcherOptions) ? [
         ...l1,
         ...permute(topicToPubs[pubTopic], topicToSubs[subTopic], pubTopic),
       ] : l1), l0)
@@ -93,14 +97,14 @@ export default function compile(services: Services, blocks: Blocks): GraphResult
     edges,
     publishersOf(sub) {
       return pubTopics
-        .filter(pub => matcher(sub, pub))
+        .filter(pub => matcher(sub, pub, matcherOptions))
         .reduce((list, topic) => (
           [...list, ...topicToPubs[topic].map(service => [service, topic])]
         ), []);
     },
     subscribersOf(pub) {
       return subTopics
-        .filter(sub => matcher(sub, pub))
+        .filter(sub => matcher(sub, pub, matcherOptions))
         .reduce((list, topic) => (
           [...list, ...topicToSubs[topic].map(service => [service, topic])]
         ), []);
