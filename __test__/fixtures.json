@@ -82,5 +82,108 @@
         "topic": "nio.data"
       }
     }
+  },
+  "tracePath": {
+    "services": {
+      "A": {
+        "name": "A",
+        "mapping": [],
+        "execution": [
+          { "name": "Pub1" }
+        ]
+      },
+      "B": {
+        "name": "B",
+        "mapping": [],
+        "execution": [
+          { "name": "Sub1" },
+          { "name": "Pub2" }
+        ]
+      },
+      "C": {
+        "name": "C",
+        "mapping": [],
+        "execution": [
+          { "name": "Sub2" },
+          { "name": "Pub3" }
+        ]
+      },
+      "D": {
+        "name": "D",
+        "mapping": [],
+        "execution": [
+          { "name": "Sub2" },
+          { "name": "Sub3" }
+        ]
+      },
+      "E": {
+        "name": "E",
+        "mapping": [],
+        "execution": [
+          { "name": "Sub5" },
+          { "name": "Pub4" }
+        ]
+      },
+      "F": {
+        "name": "F",
+        "mapping": [],
+        "execution": [
+          { "name": "Sub4" },
+          { "name": "Pub5" }
+        ]
+      }
+    },
+    "blocks": {
+      "Pub1": {
+        "name": "Pub1",
+        "type": "Publisher",
+        "topic": "nio.1"
+      },
+      "Pub2": {
+        "name": "Pub2",
+        "type": "Publisher",
+        "topic": "nio.2"
+      },
+      "Pub3": {
+        "name": "Pub3",
+        "type": "Publisher",
+        "topic": "nio.3"
+      },
+      "Pub4": {
+        "name": "Pub4",
+        "type": "Publisher",
+        "topic": "nio.4"
+      },
+      "Pub5": {
+        "name": "Pub5",
+        "type": "Publisher",
+        "topic": "nio.5"
+      },
+      "Sub1": {
+        "name": "Sub1",
+        "type": "Subscriber",
+        "topic": "nio.1"
+      },
+      "Sub2": {
+        "name": "Sub2",
+        "type": "Subscriber",
+        "topic": "nio.2"
+      },
+      "Sub3": {
+        "name": "Sub3",
+        "type": "Subscriber",
+        "topic": "nio.3"
+      },
+      "Sub4": {
+        "name": "Sub4",
+        "type": "Subscriber",
+        "topic": "nio.4"
+      },
+      "Sub5": {
+        "name": "Sub5",
+        "type": "Subscriber",
+        "topic": "nio.5"
+      }
+    }
   }
 }

@@ -2,6 +2,7 @@
 import matcher from '@nio/topic-matcher';
 
 import partitionBlocks from './partition-blocks';
+import trace from './trace';
 import type {
   Blocks,
   Services,
@@ -108,6 +109,9 @@ export default function compile(services: Services, blocks: Blocks): GraphResult
         .reduce((list, topic) => (
           [...list, ...topicToSubs[topic].map(service => [service, topic])]
         ), []);
+    },
+    trace(start, end) {
+      return trace(edges, start, end);
     },
   };
 }
