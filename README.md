@@ -19,3 +19,13 @@ const result = graph(services, blocks)
 result.nodes // => Array<ServiceName>
 result.edges // => Array<[ServiceName, ServiceName, Topic]>
 ```
+
+# Trace
+
+```js
+const result = graph(services, blocks)
+const trace = result.trace('ServiceA', 'ServiceD');
+
+trace.services // Set<ServiceName>
+trace.paths    // Array<Array<ServiceName>>
+```
