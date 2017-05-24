@@ -5,12 +5,14 @@ import partitionBlocks from './partition-blocks';
 import trace from './trace';
 import type {
   Blocks,
-  Services,
-  ServiceShape,
   ExecutionStep,
   GraphResult,
-  TopicServiceList,
   Mapping,
+  ServiceName,
+  ServiceShape,
+  Services,
+  TopicServiceList,
+  TraceResult,
 } from './types.js.flow';
 
 const getName = (step: ExecutionStep) => step.name;
@@ -31,7 +33,7 @@ const createAdder = (list: TopicServiceList) =>
   );
 
 const matcherOptions = {
-  resolver: t => t.replace(/\[\[([^\]]+)\]\]/g, '__$1__'),
+  resolver: (t: string): string => t.replace(/\[\[([^\]]+)\]\]/g, '__$1__'),
 };
 
 export default function compile(services: Services, blocks: Blocks): GraphResult {
@@ -96,21 +98,21 @@ export default function compile(services: Services, blocks: Blocks): GraphResult
   return {
     nodes: [...nodes],
     edges,
-    publishersOf(sub) {
+    publishersOf(sub: ServiceName) {
       return pubTopics
         .filter(pub => matcher(sub, pub, matcherOptions))
         .reduce((list, topic) => (
           [...list, ...topicToPubs[topic].map(service => [service, topic])]
         ), []);
     },
-    subscribersOf(pub) {
+    subscribersOf(pub: ServiceName) {
       return subTopics
         .filter(sub => matcher(sub, pub, matcherOptions))
         .reduce((list, topic) => (
           [...list, ...topicToSubs[topic].map(service => [service, topic])]
         ), []);
     },
-    trace(start, end) {
+    trace(start: ServiceName, end: ServiceName): TraceResult {
       return trace(edges, start, end);
     },
   };

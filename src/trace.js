@@ -1,5 +1,13 @@
-function dfs(adjacent, current, end, visited = [current]) {
-  const nodes = adjacent.get(current) || [];
+// @flow
+import type {
+  Edges,
+  ExecutionPath,
+  ServiceName,
+  TraceResult,
+} from './types.js.flow';
+
+function dfs(adjacent, current, end, visited = [current]): Array<ExecutionPath> {
+  const nodes = adjacent[current] || [];
 
   return nodes.reduce((list, node) => {
     const nextVisited = [...visited, node];
@@ -9,12 +17,15 @@ function dfs(adjacent, current, end, visited = [current]) {
   }, []);
 }
 
-export default function trace(edges, start, end) {
-  const adjacent = edges.reduce((map, [pub, sub]) => {
-    if (map.has(pub)) map.get(pub).push(sub);
-    else map.set(pub, [sub]);
+type Adjacent = {[ServiceName]: Array<ServiceName>};
+
+export default function trace(edges: Edges, start: ServiceName, end: ServiceName): TraceResult {
+  const adjacent = edges.reduce((map: Adjacent, [pub, sub]) => {
+    /* eslint-disable no-param-reassign */
+    if (pub in map) map[pub].push(sub);
+    else map[pub] = [sub];
     return map;
-  }, new Map());
+  }, {});
 
   const paths = dfs(adjacent, start, end);
   const services = paths.reduce((set, list) => {

@@ -48,11 +48,20 @@ export type Blocks = { [BlockName]: BlockShape };
 export type Services = { [ServiceName]: ServiceShape };
 export type Mapping = { [BlockAlias]: BlockName };
 
+export type Edges = Array<[ServiceName, ServiceName, Topic]>;
+
 export type GraphResult = {
   nodes: Array<ServiceName>;
-  edges: Array<[ServiceName, ServiceName, Topic]>;
+  edges: Edges;
   publishersOf: (Topic) => Array<[ServiceName, Topic]>;
   subscribersOf: (Topic) => Array<[ServiceName, Topic]>
 };
 
 export type TopicServiceList = { [Topic]: Array<ServiceName> };
+
+export type ExecutionPath = Array<ServiceName>;
+
+export type TraceResult = {
+  services: Set<ServiceName>;
+  paths: Array<ExecutionPath>;
+};
