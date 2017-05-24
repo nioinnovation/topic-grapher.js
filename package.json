@@ -9,8 +9,8 @@
     "lint": "eslint src/",
     "prebuild": "npm run clean",
     "prepublish": "npm run verify && npm run build",
-    "test": "mocha --compilers js:babel-register _test/",
-    "test:watch": "mocha -w --compilers js:babel-register _test/",
+    "test": "mocha --compilers js:babel-register __test__/",
+    "test:watch": "mocha -w --compilers js:babel-register __test__/",
     "type-check": "flow check",
     "verify": "npm run lint && npm run type-check && npm run test"
   },
