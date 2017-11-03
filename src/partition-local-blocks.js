@@ -10,13 +10,13 @@ export default (blocks: Blocks): PartitionResult => (
     const { type, topic }: BlockShape = blocks[key];
     const [pubMap, subMap, pubList, subList] = state;
     switch (type) {
-      case 'Publisher': return [
+      case 'LocalPublisher': return [
         { ...pubMap, [key]: topic },
         subMap,
         [...pubList, key],
         subList,
       ];
-      case 'Subscriber': return [
+      case 'LocalSubscriber': return [
         pubMap,
         { ...subMap, [key]: topic },
         pubList,

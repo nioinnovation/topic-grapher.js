@@ -2,6 +2,7 @@
 import matcher from '@nio/topic-matcher';
 
 import partitionBlocks from './partition-blocks';
+import partitionLocalBlocks from './partition-local-blocks';
 import trace from './trace';
 import type {
   Blocks,
@@ -38,11 +39,16 @@ export default function compile(services: Services, blocks: Blocks): GraphResult
   const nodes = new Set();
 
   const [pubs, subs] = partitionBlocks(blocks);
+  const [localPubs, localSubs] = partitionLocalBlocks(blocks);
   const topicToPubs: TopicServiceList = {};
   const topicToSubs: TopicServiceList = {};
+  const topicToLocalPubs: TopicServiceList = {};
+  const topicToLocalSubs: TopicServiceList = {};
 
   const addPublisher = createAdder(topicToPubs);
   const addSubscriber = createAdder(topicToSubs);
+  const addLocalPublisher = createAdder(topicToLocalPubs);
+  const addLocalSubscriber = createAdder(topicToLocalSubs);
 
   Object.keys(services).forEach((key) => {
     const {
@@ -80,10 +86,28 @@ export default function compile(services: Services, blocks: Blocks): GraphResult
       .forEach((topic) => {
         addSubscriber(name, topic);
       });
+
+    // LocalPublishers
+    resolvedBlockNames
+    .map(b => localPubs[b])
+    .filter(exists)
+    .forEach((topic) => {
+      addLocalPublisher(name, topic);
+    });
+
+    // LocalSubscribers
+    resolvedBlockNames
+      .map(b => localSubs[b])
+      .filter(exists)
+      .forEach((topic) => {
+        addLocalSubscriber(name, topic);
+      });
   });
 
   const pubTopics = Object.keys(topicToPubs);
   const subTopics = Object.keys(topicToSubs);
+  const localPubTopics = Object.keys(topicToLocalPubs);
+  const localSubTopics = Object.keys(topicToLocalSubs);
 
   const edges = subTopics.reduce((l0, subTopic) => (
     pubTopics.reduce((l1, pubTopic) => (
@@ -93,9 +117,23 @@ export default function compile(services: Services, blocks: Blocks): GraphResult
       ] : l1), l0)
   ), []);
 
+  const localEdges = localSubTopics.reduce((l0, localSubTopic) => (
+    localPubTopics.reduce((l1, localPubTopic) => (
+      matcher(localSubTopic, localPubTopic, matcherOptions) ? [
+        ...l1,
+        ...permute(
+            topicToLocalPubs[localPubTopic],
+            topicToLocalSubs[localSubTopic],
+            localPubTopic
+          ),
+      ] : l1), l0)
+  ), []);
+
+  const allEdges = edges.concat(localEdges);
+
   return {
     nodes: [...nodes],
-    edges,
+    allEdges,
     publishersOf(sub) {
       return pubTopics
         .filter(pub => matcher(sub, pub, matcherOptions))
@@ -105,9 +143,23 @@ export default function compile(services: Services, blocks: Blocks): GraphResult
     },
     subscribersOf(pub) {
       return subTopics
-        .filter(sub => matcher(sub, pub, matcherOptions))
+      .filter(sub => matcher(sub, pub, matcherOptions))
+      .reduce((list, topic) => (
+        [...list, ...topicToSubs[topic].map(service => [service, topic])]
+      ), []);
+    },
+    localPublishersOf(localSub) {
+      return localPubTopics
+        .filter(localPub => matcher(localSub, localPub, matcherOptions))
         .reduce((list, topic) => (
-          [...list, ...topicToSubs[topic].map(service => [service, topic])]
+          [...list, ...topicToLocalPubs[topic].map(service => [service, topic])]
+        ), []);
+    },
+    localSubscribersOf(localPub) {
+      return localSubTopics
+        .filter(localSub => matcher(localSub, localPub, matcherOptions))
+        .reduce((list, topic) => (
+          [...list, ...topicToLocalSubs[topic].map(service => [service, topic])]
         ), []);
     },
     trace(start, end) {
