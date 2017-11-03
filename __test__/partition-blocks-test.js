@@ -18,15 +18,13 @@ describe('partition blocks', () => {
 
   it('should build a List<Name> of publishers', () => {
     const [,,pubList] = partitionBlocks(simple.blocks);
-    expect(pubList).to.have.length(2);
+    expect(pubList).to.have.length(1);
     expect(pubList[0]).to.equal('PubData');
-    expect(pubList[1]).to.equal('LocalPubData');
   });
 
   it('should build a List<Name> of subscribers', () => {
     const [,,,subList] = partitionBlocks(simple.blocks);
-    expect(subList).to.have.length(2);
+    expect(subList).to.have.length(1);
     expect(subList[0]).to.equal('SubData');
-    expect(subList[1]).to.equal('LocalSubData');
   });
 });
