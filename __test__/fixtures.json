@@ -22,9 +22,19 @@
         "type": "Publisher",
         "topic": "nio.data"
       },
+      "LocalPubData": {
+        "name": "LocalPubData",
+        "type": "LocalPublisher",
+        "topic": "nio.data"
+      },
       "SubData": {
         "name": "SubData",
         "type": "Subscriber",
+        "topic": "nio.data"
+      },
+      "LocalSubData": {
+        "name": "LocalSubData",
+        "type": "LocalSubscriber",
         "topic": "nio.data"
       }
     }
