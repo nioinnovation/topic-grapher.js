@@ -13,7 +13,7 @@ describe('topic graph', () => {
     });
 
     it('should have one edge', () => {
-      expect(result.allEdges).to.deep.equal([
+      expect(result.edges).to.deep.equal([
         ['PubService', 'SubService', 'nio.data']
       ]);
     });
@@ -44,7 +44,7 @@ describe('topic graph', () => {
     });
 
     it('should have one edge', () => {
-      expect(result.allEdges).to.deep.equal([
+      expect(result.edges).to.deep.equal([
         ['CircularService', 'CircularService', 'nio.data']
       ]);
     });
@@ -75,7 +75,7 @@ describe('topic graph', () => {
     });
 
     it('should have one edge', () => {
-      expect(result.allEdges).to.deep.equal([
+      expect(result.edges).to.deep.equal([
         ['PubService', 'SubService', 'nio.[[FOO]]']
       ]);
     });
@@ -108,7 +108,7 @@ describe('topic graph', () => {
     });
 
     it('should have two edges', () => {
-      expect(result.allEdges).to.deep.equal([
+      expect(result.edges).to.deep.equal([
         ['PubService', 'SubService', 'nio.data'],
         ['LocalPubService', 'LocalSubService', 'nio.data']
       ]);

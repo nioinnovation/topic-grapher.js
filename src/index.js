@@ -109,7 +109,7 @@ export default function compile(services: Services, blocks: Blocks): GraphResult
   const localPubTopics = Object.keys(topicToLocalPubs);
   const localSubTopics = Object.keys(topicToLocalSubs);
 
-  const edges = subTopics.reduce((l0, subTopic) => (
+  const pubSubEdges = subTopics.reduce((l0, subTopic) => (
     pubTopics.reduce((l1, pubTopic) => (
       matcher(subTopic, pubTopic, matcherOptions) ? [
         ...l1,
@@ -129,11 +129,11 @@ export default function compile(services: Services, blocks: Blocks): GraphResult
       ] : l1), l0)
   ), []);
 
-  const allEdges = edges.concat(localEdges);
+  const edges = pubSubEdges.concat(localEdges);
 
   return {
     nodes: [...nodes],
-    allEdges,
+    edges,
     publishersOf(sub) {
       return pubTopics
         .filter(pub => matcher(sub, pub, matcherOptions))
