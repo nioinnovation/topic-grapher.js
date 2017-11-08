@@ -83,6 +83,60 @@
       }
     }
   },
+  "simpleLocal": {
+    "services": {
+      "PubService": {
+        "name": "PubService",
+        "mapping": [],
+        "execution": [
+          { "name": "PubData" }
+        ]
+      },
+      "SubService": {
+        "name": "SubService",
+        "mapping": [],
+        "execution": [
+          { "name": "SubData" }
+        ]
+      },
+      "LocalPubService": {
+        "name": "LocalPubService",
+        "mapping": [],
+        "execution": [
+          { "name": "LocalPubData" }
+        ]
+      },
+      "LocalSubService": {
+        "name": "LocalSubService",
+        "mapping": [],
+        "execution": [
+          { "name": "LocalSubData" }
+        ]
+      }
+    },
+    "blocks": {
+      "PubData": {
+        "name": "PubData",
+        "type": "Publisher",
+        "topic": "nio.data"
+      },
+      "SubData": {
+        "name": "SubData",
+        "type": "Subscriber",
+        "topic": "nio.data"
+      },
+      "LocalPubData": {
+        "name": "LocalPubData",
+        "type": "LocalPublisher",
+        "topic": "nio.data"
+      },
+      "LocalSubData": {
+        "name": "LocalSubData",
+        "type": "LocalSubscriber",
+        "topic": "nio.data"
+      }
+    }
+  },
   "tracePath": {
     "services": {
       "A": {
