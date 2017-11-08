@@ -122,11 +122,27 @@ describe('topic graph', () => {
       ]);
     });
 
+    it('should find publishers through `nio.data`', () => {
+      const pubs = result.publishersOf('nio.data');
+      expect(pubs).to.have.length(1);
+      expect(pubs).to.deep.equal([
+        ['PubService', 'nio.data']
+      ]);
+    });
+
     it('should find localSubscribers through `nio.data`', () => {
       const localSubs = result.localSubscribersOf('nio.data');
       expect(localSubs).to.have.length(1);
       expect(localSubs).to.deep.equal([
         ['LocalSubService', 'nio.data']
+      ]);
+    });
+
+    it('should find subscribers through `nio.data`', () => {
+      const subs = result.subscribersOf('nio.data');
+      expect(subs).to.have.length(1);
+      expect(subs).to.deep.equal([
+        ['SubService', 'nio.data']
       ]);
     });
   });

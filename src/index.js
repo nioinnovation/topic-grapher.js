@@ -2,7 +2,6 @@
 import matcher from '@nio/topic-matcher';
 
 import partitionBlocks from './partition-blocks';
-import partitionLocalBlocks from './partition-local-blocks';
 import trace from './trace';
 import type {
   Blocks,
@@ -38,8 +37,8 @@ const matcherOptions = {
 export default function compile(services: Services, blocks: Blocks): GraphResult {
   const nodes = new Set();
 
-  const [pubs, subs] = partitionBlocks(blocks);
-  const [localPubs, localSubs] = partitionLocalBlocks(blocks);
+  const [pubs, subs] = partitionBlocks(blocks, false);
+  const [localPubs, localSubs] = partitionBlocks(blocks, true);
   const topicToPubs: TopicServiceList = {};
   const topicToSubs: TopicServiceList = {};
   const topicToLocalPubs: TopicServiceList = {};
@@ -109,7 +108,7 @@ export default function compile(services: Services, blocks: Blocks): GraphResult
   const localPubTopics = Object.keys(topicToLocalPubs);
   const localSubTopics = Object.keys(topicToLocalSubs);
 
-  const pubSubEdges = subTopics.reduce((l0, subTopic) => (
+  const edges = subTopics.reduce((l0, subTopic) => (
     pubTopics.reduce((l1, pubTopic) => (
       matcher(subTopic, pubTopic, matcherOptions) ? [
         ...l1,
@@ -124,16 +123,14 @@ export default function compile(services: Services, blocks: Blocks): GraphResult
         ...permute(
             topicToLocalPubs[localPubTopic],
             topicToLocalSubs[localSubTopic],
-            localPubTopic
+            localPubTopic,
           ),
       ] : l1), l0)
   ), []);
 
-  const edges = pubSubEdges.concat(localEdges);
-
   return {
     nodes: [...nodes],
-    edges,
+    edges: edges.concat(localEdges),
     publishersOf(sub) {
       return pubTopics
         .filter(pub => matcher(sub, pub, matcherOptions))
