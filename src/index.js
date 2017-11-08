@@ -38,8 +38,8 @@ const matcherOptions = {
 export default function compile(services: Services, blocks: Blocks): GraphResult {
   const nodes = new Set();
 
-  const [pubs, subs] = partitionBlocks(blocks, false);
-  const [localPubs, localSubs] = partitionBlocks(blocks, true);
+  const [pubs, subs] = partitionBlocks(blocks);
+  const [localPubs, localSubs] = partitionBlocks(blocks, { local: true });
   const topicToPubs: TopicServiceList = {};
   const topicToSubs: TopicServiceList = {};
   const topicToLocalPubs: TopicServiceList = {};

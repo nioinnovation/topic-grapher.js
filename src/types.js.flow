@@ -6,6 +6,7 @@ export type BlockTerminal = string;
 export type Topic = string;
 export type TopicList = Array<BlockName>;
 export type TopicMap = {[BlockName]: Topic};
+export type PartitionOptions = {local: boolean}
 
 export type PartitionResult = [
   TopicMap,
