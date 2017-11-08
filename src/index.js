@@ -25,10 +25,11 @@ const permute = (left: Array<string>, right: Array<string>, ...rest) => (
 );
 
 const createAdder = (list: TopicServiceList) =>
-  (service: string, topic: string) => (
+  (service: string, topic: string) => {
     /* eslint-disable no-param-reassign */
-    (list[topic] || (list[topic] = [])).push(service)
-  );
+    const topicList = list[topic] || (list[topic] = []);
+    return topicList.push(service);
+  };
 
 const matcherOptions = {
   resolver: t => t.replace(/\[\[([^\]]+)\]\]/g, '__$1__'),
