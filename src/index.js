@@ -14,6 +14,7 @@ import type {
 } from './types.js.flow';
 
 const getName = (step: ExecutionStep) => step.name;
+const getID = obj => obj.id || obj.name;
 const exists = topic => !!topic;
 
 const permute = (left: Array<string>, right: Array<string>, ...rest) => (
@@ -51,13 +52,13 @@ export default function compile(services: Services, blocks: Blocks): GraphResult
   const addLocalSubscriber = createAdder(topicToLocalSubs);
 
   Object.keys(services).forEach((key) => {
+    const _id: string = getID(services[key]);
     const {
       name,
       execution,
       mapping,
     }: ServiceShape = services[key];
-
-    nodes.add(name);
+    nodes.add(_id);
 
     const mappings: Mapping = mapping ?
       mapping.reduce((rest, { name: alias, mapping: block }) => ({
@@ -76,7 +77,7 @@ export default function compile(services: Services, blocks: Blocks): GraphResult
       .map(b => pubs[b])
       .filter(exists)
       .forEach((topic) => {
-        addPublisher(name, topic);
+        addPublisher(_id, topic);
       });
 
     // Subscribers
@@ -84,7 +85,7 @@ export default function compile(services: Services, blocks: Blocks): GraphResult
       .map(b => subs[b])
       .filter(exists)
       .forEach((topic) => {
-        addSubscriber(name, topic);
+        addSubscriber(_id, topic);
       });
 
     // LocalPublishers
@@ -92,7 +93,7 @@ export default function compile(services: Services, blocks: Blocks): GraphResult
     .map(b => localPubs[b])
     .filter(exists)
     .forEach((topic) => {
-      addLocalPublisher(name, topic);
+      addLocalPublisher(_id, topic);
     });
 
     // LocalSubscribers
@@ -100,7 +101,7 @@ export default function compile(services: Services, blocks: Blocks): GraphResult
       .map(b => localSubs[b])
       .filter(exists)
       .forEach((topic) => {
-        addLocalSubscriber(name, topic);
+        addLocalSubscriber(_id, topic);
       });
   });
 
