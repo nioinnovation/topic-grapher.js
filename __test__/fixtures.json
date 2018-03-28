@@ -239,5 +239,37 @@
         "topic": "nio.5"
       }
     }
+  },
+  "id": {
+    "services": {
+      "PubService": {
+        "id": "PubService",
+        "name": "PubService--RENAMED",
+        "mapping": [],
+        "execution": [
+          { "name": "PubData" }
+        ]
+      },
+      "SubService": {
+        "id": "SubService",
+        "name": "SubService--RENAMED",
+        "mapping": [],
+        "execution": [
+          { "name": "SubData" }
+        ]
+      }
+    },
+    "blocks": {
+      "PubData": {
+        "name": "PubData",
+        "type": "Publisher",
+        "topic": "nio.data"
+      },
+      "SubData": {
+        "name": "SubData",
+        "type": "Subscriber",
+        "topic": "nio.data"
+      }
+    }
   }
 }

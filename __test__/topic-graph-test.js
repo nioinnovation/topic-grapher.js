@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
 import graph from '../src';
-import { simple, circular, env, simpleLocal } from './fixtures.json'
+import { simple, circular, env, simpleLocal, id } from './fixtures.json'
 
 describe('topic graph', () => {
   describe('with a simple pub/sub', () => {
@@ -143,6 +143,18 @@ describe('topic graph', () => {
       expect(subs).to.have.length(1);
       expect(subs).to.deep.equal([
         ['SubService', 'nio.data']
+      ]);
+    });
+  });
+  describe('with an id on services', () => {
+    const result = graph(id.services, id.blocks);
+
+    it('should use the id', () => {
+      expect(result.edges).to.deep.equal([
+        ['PubService', 'SubService', 'nio.data']
+      ]);
+      expect(result.edges).to.not.deep.equal([
+        ['PubService--RENAMED', 'SubService--RENAMED', 'nio.data']
       ]);
     });
   });
