@@ -13,15 +13,7 @@ import type {
   Mapping,
 } from './types.js.flow';
 
-const getName = (step: ExecutionStep) => step.id || step.name;
-const getID = obj => obj.id || obj.name;
-const reduceMapping = (rest, { id, name, mapping: block }) => {
-  const alias = id || name;
-  return {
-    ...rest,
-    [alias]: block,
-  };
-};
+const getId = (step: ExecutionStep) => step.id;
 
 const exists = topic => !!topic;
 
@@ -60,22 +52,25 @@ export default function compile(services: Services, blocks: Blocks): GraphResult
   const addLocalSubscriber = createAdder(topicToLocalSubs);
 
   Object.keys(services).forEach((key) => {
-    const _id: string = getID(services[key]);
     const {
+      id,
       name,
       execution,
       mapping,
     }: ServiceShape = services[key];
 
-    nodes.add(_id);
+    nodes.add(id);
 
     const mappings: Mapping = mapping ?
-      mapping.reduce(reduceMapping, {}) : {};
+      mapping.reduce((rest, { id, mapping: block }) => ({
+        ...rest,
+        [id]: block,
+      }), {}) : {};
 
-    const resolveName = alias => (mappings[alias] || alias);
+    const resolveId = id => (mappings[id] || id);
 
     const resolvedBlockNames = [...new Set(
-      execution.map(getName).map(resolveName),
+      execution.map(getId).map(resolveId),
     )];
 
     // Publishers
@@ -83,7 +78,7 @@ export default function compile(services: Services, blocks: Blocks): GraphResult
       .map(b => pubs[b])
       .filter(exists)
       .forEach((topic) => {
-        addPublisher(_id, topic);
+        addPublisher(id, topic);
       });
 
     // Subscribers
@@ -91,7 +86,7 @@ export default function compile(services: Services, blocks: Blocks): GraphResult
       .map(b => subs[b])
       .filter(exists)
       .forEach((topic) => {
-        addSubscriber(_id, topic);
+        addSubscriber(id, topic);
       });
 
     // LocalPublishers
@@ -99,7 +94,7 @@ export default function compile(services: Services, blocks: Blocks): GraphResult
     .map(b => localPubs[b])
     .filter(exists)
     .forEach((topic) => {
-      addLocalPublisher(_id, topic);
+      addLocalPublisher(id, topic);
     });
 
     // LocalSubscribers
@@ -107,7 +102,7 @@ export default function compile(services: Services, blocks: Blocks): GraphResult
       .map(b => localSubs[b])
       .filter(exists)
       .forEach((topic) => {
-        addLocalSubscriber(_id, topic);
+        addLocalSubscriber(id, topic);
       });
   });
 
