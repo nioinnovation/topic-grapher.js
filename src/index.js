@@ -13,8 +13,16 @@ import type {
   Mapping,
 } from './types.js.flow';
 
-const getName = (step: ExecutionStep) => step.name;
+const getName = (step: ExecutionStep) => step.id || step.name;
 const getID = obj => obj.id || obj.name;
+const reduceMapping = (rest, { id, name, mapping: block }) => {
+  const alias = id || name;
+  return {
+    ...rest,
+    [alias]: block,
+  };
+};
+
 const exists = topic => !!topic;
 
 const permute = (left: Array<string>, right: Array<string>, ...rest) => (
@@ -58,13 +66,11 @@ export default function compile(services: Services, blocks: Blocks): GraphResult
       execution,
       mapping,
     }: ServiceShape = services[key];
+
     nodes.add(_id);
 
     const mappings: Mapping = mapping ?
-      mapping.reduce((rest, { name: alias, mapping: block }) => ({
-        ...rest,
-        [alias]: block,
-      }), {}) : {};
+      mapping.reduce(reduceMapping, {}) : {};
 
     const resolveName = alias => (mappings[alias] || alias);
 
