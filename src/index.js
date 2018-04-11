@@ -54,7 +54,6 @@ export default function compile(services: Services, blocks: Blocks): GraphResult
   Object.keys(services).forEach((key) => {
     const {
       id,
-      name,
       execution,
       mapping,
     }: ServiceShape = services[key];
@@ -62,12 +61,12 @@ export default function compile(services: Services, blocks: Blocks): GraphResult
     nodes.add(id);
 
     const mappings: Mapping = mapping ?
-      mapping.reduce((rest, { id, mapping: block }) => ({
+      mapping.reduce((rest, { id: alias, mapping: block }) => ({
         ...rest,
-        [id]: block,
+        [alias]: block,
       }), {}) : {};
 
-    const resolveId = id => (mappings[id] || id);
+    const resolveId = alias => (mappings[alias] || alias);
 
     const resolvedBlockNames = [...new Set(
       execution.map(getId).map(resolveId),
