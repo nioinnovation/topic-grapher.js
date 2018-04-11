@@ -13,7 +13,8 @@ import type {
   Mapping,
 } from './types.js.flow';
 
-const getName = (step: ExecutionStep) => step.name;
+const getId = (step: ExecutionStep) => step.id;
+
 const exists = topic => !!topic;
 
 const permute = (left: Array<string>, right: Array<string>, ...rest) => (
@@ -52,23 +53,23 @@ export default function compile(services: Services, blocks: Blocks): GraphResult
 
   Object.keys(services).forEach((key) => {
     const {
-      name,
+      id,
       execution,
       mapping,
     }: ServiceShape = services[key];
 
-    nodes.add(name);
+    nodes.add(id);
 
     const mappings: Mapping = mapping ?
-      mapping.reduce((rest, { name: alias, mapping: block }) => ({
+      mapping.reduce((rest, { id: alias, mapping: block }) => ({
         ...rest,
         [alias]: block,
       }), {}) : {};
 
-    const resolveName = alias => (mappings[alias] || alias);
+    const resolveId = alias => (mappings[alias] || alias);
 
     const resolvedBlockNames = [...new Set(
-      execution.map(getName).map(resolveName),
+      execution.map(getId).map(resolveId),
     )];
 
     // Publishers
@@ -76,7 +77,7 @@ export default function compile(services: Services, blocks: Blocks): GraphResult
       .map(b => pubs[b])
       .filter(exists)
       .forEach((topic) => {
-        addPublisher(name, topic);
+        addPublisher(id, topic);
       });
 
     // Subscribers
@@ -84,7 +85,7 @@ export default function compile(services: Services, blocks: Blocks): GraphResult
       .map(b => subs[b])
       .filter(exists)
       .forEach((topic) => {
-        addSubscriber(name, topic);
+        addSubscriber(id, topic);
       });
 
     // LocalPublishers
@@ -92,7 +93,7 @@ export default function compile(services: Services, blocks: Blocks): GraphResult
     .map(b => localPubs[b])
     .filter(exists)
     .forEach((topic) => {
-      addLocalPublisher(name, topic);
+      addLocalPublisher(id, topic);
     });
 
     // LocalSubscribers
@@ -100,7 +101,7 @@ export default function compile(services: Services, blocks: Blocks): GraphResult
       .map(b => localSubs[b])
       .filter(exists)
       .forEach((topic) => {
-        addLocalSubscriber(name, topic);
+        addLocalSubscriber(id, topic);
       });
   });
 

@@ -2,28 +2,28 @@
   "simple": {
     "services": {
       "PubService": {
-        "name": "PubService",
+        "id": "PubService",
         "mapping": [],
         "execution": [
-          { "name": "PubData" }
+          { "id": "PubData" }
         ]
       },
       "SubService": {
-        "name": "SubService",
+        "id": "SubService",
         "mapping": [],
         "execution": [
-          { "name": "SubData" }
+          { "id": "SubData" }
         ]
       }
     },
     "blocks": {
       "PubData": {
-        "name": "PubData",
+        "id": "PubData",
         "type": "Publisher",
         "topic": "nio.data"
       },
       "SubData": {
-        "name": "SubData",
+        "id": "SubData",
         "type": "Subscriber",
         "topic": "nio.data"
       }
@@ -32,28 +32,28 @@
   "env": {
     "services": {
       "PubService": {
-        "name": "PubService",
+        "id": "PubService",
         "mapping": [],
         "execution": [
-          { "name": "PubData" }
+          { "id": "PubData" }
         ]
       },
       "SubService": {
-        "name": "SubService",
+        "id": "SubService",
         "mapping": [],
         "execution": [
-          { "name": "SubData" }
+          { "id": "SubData" }
         ]
       }
     },
     "blocks": {
       "PubData": {
-        "name": "PubData",
+        "id": "PubData",
         "type": "Publisher",
         "topic": "nio.[[FOO]]"
       },
       "SubData": {
-        "name": "SubData",
+        "id": "SubData",
         "type": "Subscriber",
         "topic": "nio.[[FOO]]"
       }
@@ -62,22 +62,22 @@
   "circular": {
     "services": {
       "CircularService": {
-        "name": "CircularService",
+        "id": "CircularService",
         "mapping": [],
         "execution": [
-          { "name": "SubData" },
-          { "name": "PubData" }
+          { "id": "SubData" },
+          { "id": "PubData" }
         ]
       }
     },
     "blocks": {
       "PubData": {
-        "name": "PubData",
+        "id": "PubData",
         "type": "Publisher",
         "topic": "nio.data"
       },
       "SubData": {
-        "name": "SubData",
+        "id": "SubData",
         "type": "Subscriber",
         "topic": "nio.data"
       }
@@ -86,52 +86,52 @@
   "simpleLocal": {
     "services": {
       "PubService": {
-        "name": "PubService",
+        "id": "PubService",
         "mapping": [],
         "execution": [
-          { "name": "PubData" }
+          { "id": "PubData" }
         ]
       },
       "SubService": {
-        "name": "SubService",
+        "id": "SubService",
         "mapping": [],
         "execution": [
-          { "name": "SubData" }
+          { "id": "SubData" }
         ]
       },
       "LocalPubService": {
-        "name": "LocalPubService",
+        "id": "LocalPubService",
         "mapping": [],
         "execution": [
-          { "name": "LocalPubData" }
+          { "id": "LocalPubData" }
         ]
       },
       "LocalSubService": {
-        "name": "LocalSubService",
+        "id": "LocalSubService",
         "mapping": [],
         "execution": [
-          { "name": "LocalSubData" }
+          { "id": "LocalSubData" }
         ]
       }
     },
     "blocks": {
       "PubData": {
-        "name": "PubData",
+        "id": "PubData",
         "type": "Publisher",
         "topic": "nio.data"
       },
       "SubData": {
-        "name": "SubData",
+        "id": "SubData",
         "type": "Subscriber",
         "topic": "nio.data"
       },
       "LocalPubData": {
-        "name": "LocalPubData",
+        "id": "LocalPubData",
         "type": "LocalPublisher",
         "topic": "nio.data"
       },
       "LocalSubData": {
-        "name": "LocalSubData",
+        "id": "LocalSubData",
         "type": "LocalSubscriber",
         "topic": "nio.data"
       }
@@ -140,103 +140,135 @@
   "tracePath": {
     "services": {
       "A": {
-        "name": "A",
+        "id": "A",
         "mapping": [],
         "execution": [
-          { "name": "Pub1" }
+          { "id": "Pub1" }
         ]
       },
       "B": {
-        "name": "B",
+        "id": "B",
         "mapping": [],
         "execution": [
-          { "name": "Sub1" },
-          { "name": "Pub2" }
+          { "id": "Sub1" },
+          { "id": "Pub2" }
         ]
       },
       "C": {
-        "name": "C",
+        "id": "C",
         "mapping": [],
         "execution": [
-          { "name": "Sub2" },
-          { "name": "Pub3" }
+          { "id": "Sub2" },
+          { "id": "Pub3" }
         ]
       },
       "D": {
-        "name": "D",
+        "id": "D",
         "mapping": [],
         "execution": [
-          { "name": "Sub2" },
-          { "name": "Sub3" }
+          { "id": "Sub2" },
+          { "id": "Sub3" }
         ]
       },
       "E": {
-        "name": "E",
+        "id": "E",
         "mapping": [],
         "execution": [
-          { "name": "Sub5" },
-          { "name": "Pub4" }
+          { "id": "Sub5" },
+          { "id": "Pub4" }
         ]
       },
       "F": {
-        "name": "F",
+        "id": "F",
         "mapping": [],
         "execution": [
-          { "name": "Sub4" },
-          { "name": "Pub5" }
+          { "id": "Sub4" },
+          { "id": "Pub5" }
         ]
       }
     },
     "blocks": {
       "Pub1": {
-        "name": "Pub1",
+        "id": "Pub1",
         "type": "Publisher",
         "topic": "nio.1"
       },
       "Pub2": {
-        "name": "Pub2",
+        "id": "Pub2",
         "type": "Publisher",
         "topic": "nio.2"
       },
       "Pub3": {
-        "name": "Pub3",
+        "id": "Pub3",
         "type": "Publisher",
         "topic": "nio.3"
       },
       "Pub4": {
-        "name": "Pub4",
+        "id": "Pub4",
         "type": "Publisher",
         "topic": "nio.4"
       },
       "Pub5": {
-        "name": "Pub5",
+        "id": "Pub5",
         "type": "Publisher",
         "topic": "nio.5"
       },
       "Sub1": {
-        "name": "Sub1",
+        "id": "Sub1",
         "type": "Subscriber",
         "topic": "nio.1"
       },
       "Sub2": {
-        "name": "Sub2",
+        "id": "Sub2",
         "type": "Subscriber",
         "topic": "nio.2"
       },
       "Sub3": {
-        "name": "Sub3",
+        "id": "Sub3",
         "type": "Subscriber",
         "topic": "nio.3"
       },
       "Sub4": {
-        "name": "Sub4",
+        "id": "Sub4",
         "type": "Subscriber",
         "topic": "nio.4"
       },
       "Sub5": {
-        "name": "Sub5",
+        "id": "Sub5",
         "type": "Subscriber",
         "topic": "nio.5"
+      }
+    }
+  },
+  "id": {
+    "services": {
+      "PubService": {
+        "id": "PubService",
+        "name": "PubService--RENAMED",
+        "mapping": [],
+        "execution": [
+          { "id": "PubData" }
+        ]
+      },
+      "SubService": {
+        "id": "SubService",
+        "name": "SubService--RENAMED",
+        "mapping": [],
+        "execution": [
+          { "id": "SubData" }
+        ]
+      }
+    },
+    "blocks": {
+      "PubData": {
+        "id": "PubData",
+        "type": "Publisher",
+        "topic": "nio.data"
+      },
+      "SubData": {
+        "id": "SubData",
+        "type": "Subscriber",
+        "topic": "nio.data"
       }
     }
   }
